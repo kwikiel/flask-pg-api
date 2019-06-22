@@ -1,4 +1,4 @@
-from src.__init__ import app, db, bcrypt
+from src.main import app, db
 import datetime
 import jwt
 
