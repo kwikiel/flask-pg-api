@@ -7,8 +7,6 @@ import datetime
 import jwt
 
 # local
-# import db
-# from src.models import User
 
 # Initialize application
 app = Flask(__name__, static_folder='templates')
@@ -21,7 +19,10 @@ app.config.from_object(app_settings)
 
 db = SQLAlchemy(app)
 
+from src.models import User
+
 # define form scheme
+
 class AuthForm(Form):
     email = TextField('Email:')
     password = TextField('Password:')
@@ -35,20 +36,21 @@ def hello():
             get  -> form template 
             post -> user_id
     """
-    print("req form %s" % request.form)
     form = AuthForm(request.form)
-    print("Auth form %s" % bool(form['email']))
-    # print(request.form)
-    if not form:
-        print('well shit')
+
+    print(request.headers)
+    
+    if request.method == 'POST':
         print("email: ", request.form['email'],
               "pass: ", request.form['password'])
 
-        if request.method == 'POST':
-            user_id = User.save(form)
-            return make_response(jsonify({
-                "user_id": user_id,
-            })), 200
+        user = User(form.email, form.password)
+        user_id = user.save()
+        print("user_id %s" % user_id)
+
+        return make_response(jsonify({
+            "user_id": user_id,
+        })), 200
 
     return render_template('index.html', form=form)
 
