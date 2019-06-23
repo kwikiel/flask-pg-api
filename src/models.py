@@ -1,4 +1,5 @@
-from src.main import app, db
+from sqlalchemy import Column, Integer, Sequence, String,  DateTime, func
+from src.main import db
 import datetime
 import jwt
 
@@ -14,9 +15,11 @@ class User(Base):
     """
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String(255), unique=True, nullable=False)
+    password = Column(String(255), nullable=False)
+    created_on = Column(DateTime, default=func.now())
+    updated_on = Column(DateTime, default=func.now(), onupdate=func.now())
 
     def __init__(self, email, password):
         self.email = email
@@ -28,8 +31,13 @@ class User(Base):
         :param user:
         :return:
         """
+        print("In User save %s " % self)
         db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+
         return self.id
 
     @staticmethod
