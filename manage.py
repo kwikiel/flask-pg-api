@@ -3,7 +3,6 @@ from flask_migrate import Migrate, MigrateCommand
 from src import app, db, models
 # from src.models import User
 from sqlalchemy.exc import InvalidRequestError
-from psycopg2.errors import UndefinedTable
 import os
 
 # Initializing the manager
