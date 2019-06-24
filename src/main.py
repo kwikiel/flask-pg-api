@@ -38,15 +38,14 @@ def hello():
     """
     form = AuthForm(request.form)
 
-    print(request.headers)
-    
-    if request.method == 'POST':
-        print("email: ", request.form['email'],
-              "pass: ", request.form['password'])
+    # print("%s\n" % type(request.headers['User-Agent']), request.headers['User-Agent'])
 
-        user = User(form.email, form.password)
+    if request.method == 'POST':
+        print("email: {} {} pass: {}"
+              .format(type(request.form['email']), request.form['email'], request.form['password']))
+
+        user = User(form.email.data, form.password.data)
         user_id = user.save()
-        print("user_id %s" % user_id)
 
         return make_response(jsonify({
             "user_id": user_id,
@@ -55,13 +54,14 @@ def hello():
     return render_template('index.html', form=form)
 
 
-@app.route("/<user_id>", methods=['GET', 'POST'])
+@app.route("/user/<user_id>", methods=['GET', 'POST'])
 def get_user(user_id):
     """
     Get user from DB by id
         param: user_id
         returns user
     """
+    print(f"even enter function {user_id}")
     user = User.get_by_id(user_id)
     return make_response(jsonify({
         user
