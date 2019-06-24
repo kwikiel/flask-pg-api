@@ -18,7 +18,9 @@ manager.add_command('db', MigrateCommand)
 
 @manager.command
 def init():
-    print('in manage')
+        db.create_all()
+        db.session.commit()
+    
     # try:
     #     print(User.get_by_id(0))
     # except UndefinedTable:
@@ -27,8 +29,6 @@ def init():
     #     print('Most likely users table already created')
     # except:
     #     print("'users' table is not found. Creating it with test data.")
-        # # db.create_all()
-        # # db.session.commit()
 
         # admin = User('admin', 'admin@example.com')
         # guest = User('guest', 'guest@example.com')
