@@ -9,7 +9,7 @@
 </ul>
 {% endif %} {% endwith %}
 <form action="/" method="post">
-  {{ form.csrf }}
+  {{ form.hidden_tag() }}
   <div class="input text" name="email" type="email">{{ form.email.label }} {{ form.email }}</div>
   <div class="input text" name="password" type="password">{{ form.password.label }} {{ form.password }}</div>
   <div class="input submit">
