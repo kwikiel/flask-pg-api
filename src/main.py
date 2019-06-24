@@ -1,6 +1,7 @@
 import os
 from flask import Flask
-from wtforms import Form, TextField
+from flask_wtf import Form
+from wtforms import TextField
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, render_template, flash, jsonify, make_response
 import datetime
