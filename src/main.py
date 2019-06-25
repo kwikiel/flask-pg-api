@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import TextField
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, render_template, flash, jsonify, make_response
@@ -24,7 +24,7 @@ from src.models import User
 
 # define form scheme
 
-class AuthForm(Form):
+class AuthForm(FlaskForm):
     email = TextField('Email:')
     password = TextField('Password:')
 
