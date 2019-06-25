@@ -47,19 +47,27 @@ class User(Base):
 
         return self.id
 
-    @staticmethod
-    def update_user(user_id, data):
+    def update(user_id, data):
         """
         Update a user by Id.
             param user_id: 
             param data: update body
             return: True(success) or False(failure)
         """
-        print("EXTRACTING")
         user = User.query.filter_by(id=user_id).first()
-        print("EXTRACTED")
-        print(f'user {user}')
-        user.email = data.email
+        if user:
+            for k,v in data.items():
+                if k == 'email':
+                    user.email = v
+                if k == 'password':
+                    user.password = v
+
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return False
+
         return True
 
     @staticmethod
