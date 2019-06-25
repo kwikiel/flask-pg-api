@@ -5,7 +5,10 @@ from wtforms import TextField
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, render_template, flash, jsonify, make_response
 import datetime
+import json
 import jwt
+
+from src.serialization import AlchemyEncoder
 
 # local
 
@@ -62,11 +65,15 @@ def get_user(user_id):
         param: user_id
         returns user
     """
-    print(f"even enter function {user_id}")
+
+    if request.method == 'POST':
+        form = AuthForm(request.form)
+        User.update(user_id, {'email': form.email.data,
+                              'password': form.password.data})
+        return f"Successfully updated user {user_id}"
+
     user = User.get_by_id(user_id)
-    return make_response(jsonify({
-        user
-    }))
+    return make_response(json.dumps(user, cls=AlchemyEncoder))
 
 
 @app.errorhandler(404)
