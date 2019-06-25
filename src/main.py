@@ -45,6 +45,9 @@ def index():
     if request.method == 'POST':
         user = User(form.email.data, form.password.data)
         user_id = user.save()
+        
+        if not user_id:
+            return "Failure: could not save user"
 
         return make_response(jsonify({
             "user_id": user_id,

@@ -42,6 +42,7 @@ class User(Base):
             db.session.commit()
         except:
             db.session.rollback()
+            return False
 
         print("new user -> {}".format(self.id))
 
