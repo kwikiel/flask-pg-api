@@ -37,8 +37,8 @@ class User(Base):
             :return:
         """
         print("In User save {} \ntable: {}".format(self, self.__table__))
-        db.session.add(self)
         try:
+            db.session.add(self)
             db.session.commit()
         except:
             db.session.rollback()
