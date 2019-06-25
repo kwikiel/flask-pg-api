@@ -33,7 +33,7 @@ class AuthForm(FlaskForm):
 
 
 @app.route("/", methods=['GET', 'POST'])
-def hello():
+def index():
     """
     Return form if simple browser request and save user in POST request case.
             returns 
@@ -42,12 +42,7 @@ def hello():
     """
     form = AuthForm(request.form)
 
-    # print("%s\n" % type(request.headers['User-Agent']), request.headers['User-Agent'])
-
     if request.method == 'POST':
-        print("email: {} {} pass: {}"
-              .format(type(request.form['email']), request.form['email'], request.form['password']))
-
         user = User(form.email.data, form.password.data)
         user_id = user.save()
 
@@ -59,23 +54,25 @@ def hello():
 
 
 @app.route("/user/<user_id>", methods=['GET', 'POST'])
-def get_user(user_id):
+def user_interact(user_id):
     """
     Get user from DB by id
         param: user_id
         returns user
     """
 
+    # update user
     if request.method == 'POST':
         form = AuthForm(request.form)
         User.update(user_id, {'email': form.email.data,
                               'password': form.password.data})
-        return f"Successfully updated user {user_id}"
-
+        return f"Successfully updated user {user_id}\n"
+    
+    # get user
     user = User.get_by_id(user_id)
     return make_response(json.dumps(user, cls=AlchemyEncoder))
 
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return "Page not found", 404
+    return "Not found", 404
