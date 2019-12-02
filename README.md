@@ -41,7 +41,7 @@ source virtual_env/bin/activate
 
 #### install dependencies
 ```
-pip install
+pip install -r requirements.txt
 ```
 
 #### Export flask env var:
